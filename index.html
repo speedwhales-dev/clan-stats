@@ -28,7 +28,8 @@
 fetch('ranking.json')
   .then(r => r.json())
   .then(data => {
-    document.getElementById("fecha").textContent = "Updated at: " + data.generated_at;
+    const date = new Date(data.generated_at);
+    document.getElementById("fecha").textContent = "Updated at: " + date.toLocaleString();
     const tbody = document.querySelector("#tabla tbody");
     data.ranking.forEach(p => {
       const tr = document.createElement("tr");
