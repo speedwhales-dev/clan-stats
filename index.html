@@ -11,13 +11,14 @@
 </head>
 <body>
 
-<h1>Ranking del Clan</h1>
+<h1>Clan Ranking</h1>
+<p id="fecha"></p>
 <table id="tabla">
   <thead>
     <tr>
       <th>#</th>
-      <th>Jugador</th>
-      <th>Cofres</th>
+      <th>Player</th>
+      <th>Chests</th>
     </tr>
   </thead>
   <tbody></tbody>
@@ -27,6 +28,7 @@
 fetch('ranking.json')
   .then(r => r.json())
   .then(data => {
+    document.getElementById("fecha").textContent = "Updated at: " + data.generated_at;
     const tbody = document.querySelector("#tabla tbody");
     data.ranking.forEach(p => {
       const tr = document.createElement("tr");
