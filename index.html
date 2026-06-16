@@ -211,7 +211,7 @@ function renderTable() {
         types[nk] = (types[nk] || 0) + v;
       });
 
-      const percent = (p.total / 70) * 100;
+      const percent = ((p.total - (p.types['Level 5 Crypt'] || 0)) / 70) * 100;
 
       const row = document.createElement("tr");
 
@@ -221,7 +221,7 @@ function renderTable() {
         <td>${p.total - (p.types['Level 5 Crypt'] || 0)}</td>
         <td style="width:100%">
           <div style="display:flex; gap:8px; align-items:center;">
-            <span>${p.total} (${percent.toFixed(0)}%)</span>
+            <span>${p.total- (p.types['Level 5 Crypt'] || 0)} (${percent.toFixed(0)}%)</span>
             <div class="bar">
               <div class="fill" style="width:${Math.min(percent,100)}%"></div>
             </div>
