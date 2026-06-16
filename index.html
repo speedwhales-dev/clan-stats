@@ -1,110 +1,263 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Clan Ranking</title>
-  <style>
-	body {
-	  font-family: Arial;
-	  margin: 40px;
-	}
+<meta charset="UTF-8">
+<title>Clan Ranking</title>
 
-	table {
-	  border-collapse: collapse;
-	  width: 400px;
-	}
+<style>
+body {
+  font-family: Arial;
+  margin: 20px;
+}
 
-	td, th {
-	  padding: 8px 12px;
-	  border: 1px solid #ccc;
-	}
+h1 { margin-bottom: 5px; }
 
-	th {
-	  background: #333;
-	  color: white;
-	}
+#toolbar {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
 
-	tr:nth-child(even) {
-	  background: #f2f2f2;
-	}
+#search {
+  padding: 6px;
+  font-size: 14px;
+}
 
-	tr:hover {
-	  background: #e6f0ff;
-	}
-	.good {
-	  background-color: #d4edda;
-	}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 10px;
+}
 
-	.warning {
-	  background-color: #fff3cd;
-	}
+td, th {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+  white-space: nowrap;
+}
 
-	.bad {
-	  background-color: #f8d7da;
-	}
-	.good td {
-	  border-left: 4px solid #28a745;
-	}
+th {
+  background: #333;
+  color: white;
+  position: sticky;
+  top: 0;
+}
 
-	.warning td {
-	  border-left: 4px solid #ffc107;
-	}
+tr:nth-child(even) { background: #f5f5f5; }
 
-	.bad td {
-	  border-left: 4px solid #dc3545;
-	}
-	#totalChests {
- 	  font-weight: bold;
-	  margin-top: 10px;
-	}
-  </style>
+/* progress */
+.bar {
+  width: 100%;
+  height: 12px;
+  background: #eee;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  background: #4caf50;
+}
+
+/* column selector */
+.column-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12px;
+}
+</style>
 </head>
+
 <body>
 
 <h1>Clan Ranking</h1>
+
+<div id="toolbar">
+  <input type="text" id="search" placeholder="Buscar jugador...">
+  <div id="columns" class="column-controls"></div>
+</div>
+
 <p id="fecha"></p>
 <p id="totalChests"></p>
+
 <table id="tabla">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Player</th>
-      <th>Chests</th>
-    </tr>
-  </thead>
+  <thead></thead>
   <tbody></tbody>
 </table>
 
 <script>
-fetch('ranking.json')
-  .then(r => r.json())
-  .then(data => {
-    const total = data.ranking.reduce((sum, p) => sum + p.chests, 0);
-    document.getElementById("totalChests").textContent = "Amount chests: " + total;
-    const date = new Date(data.generated_at);
-    document.getElementById("fecha").textContent = "Updated at: " + date.toLocaleString();
-    const tbody = document.querySelector("#tabla tbody");
-    data.ranking.forEach(p => {
-      const tr = document.createElement("tr");
-      let className = "";
-      if (p.chests >= 70) {
-  	  className = "good";
-      } else if (p.chests >= 50) {
-          className = "warning";
-      } else {
-          className = "bad";
-      }
-      tr.classList.add(className);
-      tr.innerHTML = `
+let ALL_DATA = null;
+
+const STORAGE_KEY = "clan_columns_state";
+
+/* columnas base */
+let ORDER = [
+  "Level 15 Crypt",
+  "Level 20 Crypt",
+  "Level 25 Crypt",
+  "Arena"
+];
+
+/* OCR cleanup */
+function isOCRGarbage(type) {
+  const t = type.toLowerCase();
+
+  if (t.includes("union")) return true;
+  if (t.includes("chimme")) return true;
+  if (t.includes("chimere")) return true;
+  if (t.includes("epi ch") && !t.includes("level")) return true;
+  if (t.includes("eni ch")) return true;
+
+  return false;
+}
+
+function normalizeType(type) {
+  return isOCRGarbage(type) ? "Otros" : type;
+}
+
+/* estado persistente */
+function loadState() {
+  try {
+    const s = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    return s || {};
+  } catch {
+    return {};
+  }
+}
+
+function saveState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(COLUMN_STATE));
+}
+
+/* columnas dinámicas */
+function buildColumns(data) {
+  const set = new Set();
+
+  data.forEach(p => {
+    Object.keys(p.types || {}).forEach(t => {
+      set.add(normalizeType(t));
+    });
+  });
+
+  const extras = [...set].filter(c => !ORDER.includes(c));
+
+  /* IMPORTANTE: Otros siempre al final */
+  ORDER = [...ORDER, ...extras.filter(x => x !== "Otros").sort(), "Otros"];
+
+  const saved = loadState();
+
+  ORDER.forEach(c => {
+    COLUMN_STATE[c] = saved[c] ?? false;
+  });
+}
+
+let COLUMN_STATE = {};
+
+function renderColumnSelector() {
+  const container = document.getElementById("columns");
+  container.innerHTML = "";
+
+  ORDER.forEach(col => {
+    const label = document.createElement("label");
+
+    label.innerHTML = `
+      <input type="checkbox" data-col="${col}" ${COLUMN_STATE[col] ? "checked" : ""}>
+      ${col}
+    `;
+
+    container.appendChild(label);
+  });
+
+  container.querySelectorAll("input").forEach(cb => {
+    cb.addEventListener("change", e => {
+      COLUMN_STATE[e.target.dataset.col] = e.target.checked;
+      saveState();
+      renderTable();
+    });
+  });
+}
+
+function renderTable() {
+  const thead = document.querySelector("#tabla thead");
+  const tbody = document.querySelector("#tabla tbody");
+
+  const visibleCols = ORDER.filter(c => COLUMN_STATE[c]);
+
+  thead.innerHTML = `
+    <tr>
+      <th>#</th>
+      <th>Player</th>
+      <th>Total</th>
+      <th>Progress</th>
+      ${visibleCols.map(c => `<th>${c}</th>`).join("")}
+    </tr>
+  `;
+
+  tbody.innerHTML = "";
+
+  const search = document.getElementById("search").value.toLowerCase();
+
+  ALL_DATA.ranking
+    .filter(p => p.player.toLowerCase().includes(search))
+    .forEach((p, i) => {
+
+      const types = {};
+
+      Object.entries(p.types || {}).forEach(([k, v]) => {
+        const nk = normalizeType(k);
+        types[nk] = (types[nk] || 0) + v;
+      });
+
+      const percent = (p.total / 70) * 100;
+
+      const row = document.createElement("tr");
+
+      row.innerHTML = `
         <td>${p.position}</td>
         <td>${p.player}</td>
-        <td>${p.chests}</td>
+        <td>${p.total - (p.types['Level 5 Crypt'] || 0)}</td>
+        <td style="width:100%">
+          <div style="display:flex; gap:8px; align-items:center;">
+            <span>${p.total} (${percent.toFixed(0)}%)</span>
+            <div class="bar">
+              <div class="fill" style="width:${Math.min(percent,100)}%"></div>
+            </div>
+          </div>
+        </td>
+        ${visibleCols.map(c => `<td>${types[c] || 0}</td>`).join("")}
       `;
-      tbody.appendChild(tr);
+
+      tbody.appendChild(row);
     });
+}
+
+/* INIT */
+fetch('ranking.json?v=' + Date.now())
+  .then(r => r.json())
+  .then(data => {
+    ALL_DATA = data;
+
+    COLUMN_STATE = loadState();
+
+    buildColumns(data.ranking);
+    renderColumnSelector();
+
+    document.getElementById("search")
+      .addEventListener("input", renderTable);
+
+    const total = data.ranking.reduce((s, p) => s + p.total, 0);
+    document.getElementById("totalChests").textContent =
+      "Total chests: " + total;
+
+    document.getElementById("fecha").textContent =
+      "Updated: " + new Date(data.generated_at).toLocaleString("es-ES");
+
+    renderTable();
   });
 </script>
 
 </body>
 </html>
-
