@@ -68,6 +68,12 @@ tr:nth-child(even) { background: #f5f5f5; }
   gap: 10px;
   font-size: 12px;
 }
+
+#weekInfo,
+#weekProgress {
+  margin: 4px 0;
+  color: #555;
+}
 </style>
 </head>
 
@@ -79,6 +85,9 @@ tr:nth-child(even) { background: #f5f5f5; }
   <input type="text" id="search" placeholder="Buscar jugador...">
   <div id="columns" class="column-controls"></div>
 </div>
+
+<p id="weekInfo"></p>
+<p id="weekProgress"></p>
 
 <p id="fecha"></p>
 <p id="totalChests"></p>
@@ -131,6 +140,44 @@ function loadState() {
 function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(COLUMN_STATE));
 }
+
+function getCurrentWeekRange() {
+    const now = new Date();
+
+    // Semana del evento: domingo 18:00 → domingo 18:00
+    const start = new Date(now);
+
+    const day = start.getDay(); // 0=domingo
+    start.setHours(18, 0, 0, 0);
+
+    if (day === 0 && now < start) {
+        start.setDate(start.getDate() - 7);
+    } else {
+        start.setDate(start.getDate() - day);
+    }
+
+    const end = new Date(start);
+    end.setDate(end.getDate() + 7);
+
+    return { start, end };
+}
+
+const week = getCurrentWeekRange();
+
+document.getElementById("weekInfo").textContent =
+    `Current event week: ${
+        week.start.toLocaleString("es-ES")
+    } → ${
+        week.end.toLocaleString("es-ES")
+    } (Europe/Madrid)`;
+
+// progreso de semana
+const elapsedDays =
+    (Date.now() - week.start.getTime()) /
+    (1000 * 60 * 60 * 24);
+
+document.getElementById("weekProgress").textContent =
+    `Week progress: ${elapsedDays.toFixed(1)} / 7 days elapsed`;
 
 /* columnas dinámicas */
 function buildColumns(data) {
