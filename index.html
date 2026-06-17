@@ -247,6 +247,16 @@ function renderTable() {
 
   const search = document.getElementById("search").value.toLowerCase();
 
+  ALL_DATA.ranking.sort((a, b) => {
+    const va = a.total - (a.types['Level 5 Crypt'] || 0);
+    const vb = b.total - (b.types['Level 5 Crypt'] || 0);
+    return vb - va;
+  });
+
+  ALL_DATA.ranking.forEach((p, idx) => {
+    p.position = idx + 1;
+  });
+
   ALL_DATA.ranking
     .filter(p => p.player.toLowerCase().includes(search))
     .forEach((p, i) => {
