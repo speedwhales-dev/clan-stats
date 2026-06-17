@@ -119,6 +119,7 @@ function isOCRGarbage(type) {
   if (t.includes("chimere")) return true;
   if (t.includes("epi ch") && !t.includes("level")) return true;
   if (t.includes("eni ch")) return true;
+  if (t.includes("eni ")) return true;
 
   return false;
 }
