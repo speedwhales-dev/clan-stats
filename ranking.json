@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-18T10:00:33",
+  "generated_at": "2026-06-18T10:12:37",
   "ranking": [
     { "position": 1, "player": "Eyien", "total": 240, "types": {"Level 10 Crypt": 73, "Level 15 Crypt": 157, "Level 15 epic Crypt": 9, "Level 20 Crypt": 1 } },
     { "position": 2, "player": "Starmoon", "total": 104, "types": {"Level 20 Crypt": 1, "Level 15 Citadel": 6, "Level 15 Crypt": 18, "Level 15 epic Crypt": 10, "Level 10 Citadel": 8, "Level 10 rare Crypt": 5, "Level 10 Crypt": 47, "Level 15 rare Crypt": 9 } },
@@ -16,7 +16,7 @@
     { "position": 13, "player": "OnYxMoOr", "total": 51, "types": {"Jormungandr Shop": 5, "Level 20 Crypt": 3, "Level 25 epic Crypt": 2, "Level 20 epic Crypt": 7, "Eni Fehiie eallid": 1, "Level 25 rare Crypt": 8, "Level 25 Crypt": 2, "Level 15 epic Crypt": 1, "Level 15 Crypt": 22 } },
     { "position": 14, "player": "Ares", "total": 50, "types": {"Level 35 epic Crypt": 1, "Lvl 30-34 Raid Runic squad": 4, "Level 20 Crypt": 38, "Level 20 rare Crypt": 2, "Lvl 25-29 Raid Runic squad": 5 } },
     { "position": 15, "player": "Torkosdir", "total": 49, "types": {"Level 15 Crypt": 8, "Level 15 rare Crypt": 4, "Level 5 Crypt": 2, "Level 20 Citadel": 2, "Level 15 epic Crypt": 5, "Level 20 rare Crypt": 9, "Level 25 rare Crypt": 1, "Level 10 Crypt": 11, "Level 15 Citadel": 1, "Level 20 epic Crypt": 1, "Level 20 Crypt": 5 } },
-    { "position": 16, "player": "Gavidwyn", "total": 47, "types": {"Level 10 Crypt": 15, "Level § Crypt": 3, "Jormungandr Shop": 1, "Level 5 Crypt": 4, "Level 15 epic Crypt": 2, "Level 15 Crypt": 21, "Level 20 rare Crypt": 1 } },
+    { "position": 16, "player": "Gavidwyn", "total": 47, "types": {"Level 10 Crypt": 15, "Jormungandr Shop": 1, "Level 5 Crypt": 7, "Level 15 epic Crypt": 2, "Level 15 Crypt": 21, "Level 20 rare Crypt": 1 } },
     { "position": 17, "player": "TNT", "total": 46, "types": {"Level 15 Crypt": 20, "Level 10 Crypt": 23, "Level 5 Crypt": 3 } },
     { "position": 18, "player": "MDrudi", "total": 46, "types": {"Jormungandr Shop": 5, "Level 15 Crypt": 2, "Level 15 epic Crypt": 1, "Level 10 Crypt": 36, "Level 15 rare Crypt": 2 } },
     { "position": 19, "player": "Tryfina", "total": 43, "types": {"Level 25 rare Crypt": 4, "Level 15 epic Crypt": 1, "Level 15 Crypt": 15, "Level 20 epic Crypt": 3, "Level 20 Crypt": 9, "Level 10 Crypt": 11 } },
@@ -55,7 +55,7 @@
     { "position": 52, "player": "DARKSIDE", "total": 14, "types": {"Level 20 Crypt": 2, "Level 15 Crypt": 3, "Level 10 Crypt": 2, "Level 5 Crypt": 7 } },
     { "position": 53, "player": "Wrathfont", "total": 13, "types": {"Level 25 Crypt": 2, "Level 20 Crypt": 7, "Level 10 Crypt": 1, "Level 15 Crypt": 3 } },
     { "position": 54, "player": "ronaldlion", "total": 13, "types": {"Level 15 epic Crypt": 2, "Level 15 Crypt": 6, "Jormungandr Shop": 5 } },
-    { "position": 55, "player": "Nijurus", "total": 13, "types": {"Level 5 Crypt": 2, "Level 10 Crypt": 5, "Level 10 Citadel": 2, "Level § Crypt": 4 } },
+    { "position": 55, "player": "Nijurus", "total": 13, "types": {"Level 5 Crypt": 6, "Level 10 Crypt": 5, "Level 10 Citadel": 2 } },
     { "position": 56, "player": "Carbayu", "total": 13, "types": {"Level 15 Crypt": 4, "Level 20 Crypt": 3, "Eni 6?rieunaalide eouad": 1, "Jormungandr Shop": 5 } },
     { "position": 57, "player": "Aremorica", "total": 13, "types": {"Level 5 Crypt": 1, "Level 25 Crypt": 3, "Level 10 Crypt": 3, "Level 20 rare Crypt": 6 } },
     { "position": 58, "player": "Nissa Ran", "total": 12, "types": {"Level 20 epic Crypt": 1, "Level 20 Crypt": 5, "Union of iriunipl personal regan": 5, "Lvl 25-29 Raid Runic squad": 1 } },

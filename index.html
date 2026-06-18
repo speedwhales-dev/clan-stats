@@ -291,7 +291,7 @@ function renderTable() {
         <td>${p.total - (p.types['Level 5 Crypt'] || 0)}</td>
         <td style="width:100%">
           <div style="display:flex; gap:8px; align-items:center;">
-            <span>${p.total- (p.types['Level 5 Crypt'] || 0)} (${percent.toFixed(0)}%)</span>
+            <span>(${percent.toFixed(0)}%)</span>
             <div class="bar">
        <div class="fill" style="width:${Math.min(percent,100)}%;background:${barColor}"></div>
             </div>
