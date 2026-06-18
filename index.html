@@ -271,6 +271,18 @@ function renderTable() {
 
       const percent = ((p.total - (p.types['Level 5 Crypt'] || 0)) / 70) * 100;
 
+      let barColor;
+
+      if ((p.total - (p.types['Level 5 Crypt'] || 0) < 50)) {
+        barColor = "#dc3545"; // rojo
+      }
+      else if ((p.total - (p.types['Level 5 Crypt'] || 0) < 70)) {
+        barColor = "#ffc107"; // amarillo
+      }
+      else {
+        barColor = "#28a745"; // verde
+      }
+
       const row = document.createElement("tr");
 
       row.innerHTML = `
@@ -281,7 +293,7 @@ function renderTable() {
           <div style="display:flex; gap:8px; align-items:center;">
             <span>${p.total- (p.types['Level 5 Crypt'] || 0)} (${percent.toFixed(0)}%)</span>
             <div class="bar">
-              <div class="fill" style="width:${Math.min(percent,100)}%"></div>
+       <div class="fill" style="width:${Math.min(percent,100)}%;background:${barColor}"></div>
             </div>
           </div>
         </td>
