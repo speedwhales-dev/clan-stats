@@ -283,7 +283,8 @@ let ORDER = [
   "Level 20 epic Crypt", 
   "Level 25 epic Crypt", 
   "Level 30 epic Crypt", 
-  "Level 35 epic Crypt", 
+  "Level 35 epic Crypt",
+  "Rise of the Ancients event", 
   "Arena"
 ];
 
@@ -338,7 +339,7 @@ function getCurrentWeekRange() {
 const week = getCurrentWeekRange();
 
 document.getElementById("weekInfo").textContent =
-    `Current event week: ${
+    `${
         week.start.toLocaleString("es-ES")
     } → ${
         week.end.toLocaleString("es-ES")
@@ -350,7 +351,7 @@ const elapsedDays =
     (1000 * 60 * 60 * 24);
 
 document.getElementById("weekProgress").textContent =
-    `Week progress: ${elapsedDays.toFixed(1)} / 7 days elapsed`;
+    `${elapsedDays.toFixed(1)} / 7 days elapsed`;
 
 /* columnas dinámicas */
 function buildColumns(data) {
@@ -521,10 +522,10 @@ fetch('ranking.json?v=' + Date.now())
 
     const total = data.ranking.reduce((s, p) => s + p.total, 0);
     document.getElementById("totalChests").textContent =
-      "Total chests: " + total;
+      total;
 
     document.getElementById("fecha").textContent =
-      "Updated: " + new Date(data.generated_at).toLocaleString("es-ES");
+      new Date(data.generated_at).toLocaleString("es-ES");
 
     renderTable();
   });
